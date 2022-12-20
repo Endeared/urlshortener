@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple URL Shortener</title>
+</head>
+
+<style>
+
+    body {
+        background-color: white;
+        font-family: "Roboto";
+    }
+
+    .mainCont {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title {
+        color: rgb(0, 53, 151);
+        font-weight: 900;
+        font-size: 54px;
+        margin-right: 12px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 100px;
+    }
+
+    #copyLink {
+        max-height: 60px;
+    }
+
+    .input1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input {
+        text-align: center;
+    }
+
+    #search, #outputBox, button {
+        border: 5px solid rgb(0, 53, 151);
+        border-radius: 10px;
+        padding: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-bottom: 50px;
+    }
+
+    button {
+        font-size: 16px;
+        background-color: white;
+        width: 200px;
+        font-weight: 900;
+        font-family: 'Calibri'
+    }
+
+
+
+</style>
+
+<body>
+
+    <div class="mainCont">
+        <div class="input1">
+            <div class="header">
+                <div class="title">urlShrtnr</div>
+                <img src="https://cdn-icons-png.flaticon.com/512/3214/3214679.png" id="copyLink" />
+            </div>
+            <div class="input">
+                <input type="text" name="search" id="search" placeholder="INPUT"></input>
+            </div>
+            <div class="output" id="outputCont">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+    let searchBar = document.getElementById("search");
+    searchBar.setAttribute("onkeydown", "check(this)");
+    let cont = document.getElementById('outputCont')
+    let buttonOutput = document.createElement('button')
+    buttonOutput.innerHTML = "Click me!"
+
+    function check(ele) {
+        if (event.key === "Enter") {
+            let link = ele.value;
+
+            const encodedParams = new URLSearchParams();
+            encodedParams.append("url", link);
+
+            const options = {
+                method: "POST",
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "X-RapidAPI-Key":
+                        "15ec37c6e1msh41118b97b21f529p1dd1d0jsn409e2039107c",
+                    "X-RapidAPI-Host": "url-shortener-service.p.rapidapi.com",
+                },
+                body: encodedParams,
+            };
+
+            fetch("https://url-shortener-service.p.rapidapi.com/shorten", options)
+                .then((response) => response.json())
+                .then((response) => {
+                    buttonOutput.innerHTML = "Click me!";
+                    console.log(response);
+                    cont.appendChild(buttonOutput)
+                })
+                .catch((err) => console.error(err));
+        }
+    }
+
+</script>
+
+</html>
